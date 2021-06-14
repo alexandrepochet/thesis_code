@@ -1,21 +1,17 @@
-# -*- coding: utf-8 -*-
-"""
-.. module:: momentum
-   :synopsis: Momentum Indicators.
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-"""
 import pandas as pd
 import numpy as np
-import technical_analysis.utils 
+import utils.utils as utils 
 
 
 def rsi(close, n=14, fillna=False):
-    """Relative Strength Index (RSI)
+    """
+    Relative Strength Index (RSI)
     Compares the magnitude of recent gains and losses over a specified time
     period to measure speed and change of price movements of a security. It is
     primarily used to attempt to identify overbought or oversold conditions in
     the trading of an asset.
     https://www.investopedia.com/terms/r/rsi.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -35,17 +31,19 @@ def rsi(close, n=14, fillna=False):
     rsi = 100 * emaup / (emaup + emadn)
     if fillna:
         rsi = rsi.replace([np.inf, -np.inf], np.nan).fillna(50)
+    
     return pd.Series(rsi, name='rsi')
 
-
 def money_flow_index(high, low, close, volume, n=14, fillna=False):
-    """Money Flow Index (MFI)
+    """
+    Money Flow Index (MFI)
     Uses both price and volume to measure buying and selling pressure. It is
     positive when the typical price rises (buying pressure) and negative when
     the typical price declines (selling pressure). A ratio of positive and
     negative money flow is then plugged into an RSI formula to create an
     oscillator that moves between zero and one hundred.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:money_flow_index_mfi
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -83,13 +81,15 @@ def money_flow_index(high, low, close, volume, n=14, fillna=False):
     mr = (100 - (100 / (1 + mr)))
     if fillna:
         mr = mr.replace([np.inf, -np.inf], np.nan).fillna(50)
+    
     return pd.Series(mr, name='mfi_'+str(n))
 
-
 def tsi(close, r=25, s=13, fillna=False):
-    """True strength index (TSI)
+    """
+    True strength index (TSI)
     Shows both trend direction and overbought/oversold conditions.
     https://en.wikipedia.org/wiki/True_strength_index
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         r(int): high period.
@@ -105,10 +105,12 @@ def tsi(close, r=25, s=13, fillna=False):
     tsi *= 100
     if fillna:
         tsi = tsi.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(tsi, name='tsi')
 
 def uo(high, low, close, s=7, m=14, l=28, ws=4.0, wm=2.0, wl=1.0, fillna=False):
-    """Ultimate Oscillator
+    """
+    Ultimate Oscillator
     Larry Williams' (1976) signal, a momentum oscillator designed to capture momentum
     across three different timeframes.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ultimate_oscillator
@@ -118,6 +120,7 @@ def uo(high, low, close, s=7, m=14, l=28, ws=4.0, wm=2.0, wl=1.0, fillna=False):
     Average14 = (14-period BP Sum) / (14-period TR Sum)
     Average28 = (28-period BP Sum) / (28-period TR Sum)
     UO = 100 x [(4 x Average7)+(2 x Average14)+Average28]/(4+2+1)
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -145,15 +148,18 @@ def uo(high, low, close, s=7, m=14, l=28, ws=4.0, wm=2.0, wl=1.0, fillna=False):
     uo = 100.0 * ((ws * avg_s) + (wm * avg_m) + (wl * avg_l)) / (ws + wm + wl)
     if fillna:
         uo = uo.replace([np.inf, -np.inf], np.nan).fillna(50)
+    
     return pd.Series(uo, name='uo')
 
 def stoch(high, low, close, n=14, fillna=False):
-    """Stochastic Oscillator
+    """
+    Stochastic Oscillator
     Developed in the late 1950s by George Lane. The stochastic
     oscillator presents the location of the closing price of a
     stock in relation to the high and low range of the price
     of a stock over a period of time, typically a 14-day period.
     https://www.investopedia.com/terms/s/stochasticoscillator.asp
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -169,12 +175,15 @@ def stoch(high, low, close, n=14, fillna=False):
 
     if fillna:
         stoch_k = stoch_k.replace([np.inf, -np.inf], np.nan).fillna(50)
+    
     return pd.Series(stoch_k, name='stoch_k')
 
 def stoch_signal(high, low, close, n=14, d_n=3, fillna=False):
-    """Stochastic Oscillator Signal
+    """
+    Stochastic Oscillator Signal
     Shows SMA of Stochastic Oscillator. Typically a 3 day SMA.
     https://www.investopedia.com/terms/s/stochasticoscillator.asp
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -190,11 +199,12 @@ def stoch_signal(high, low, close, n=14, d_n=3, fillna=False):
 
     if fillna:
         stoch_d = stoch_d.replace([np.inf, -np.inf], np.nan).fillna(50)
+    
     return pd.Series(stoch_d, name='stoch_d')
 
-
 def wr(high, low, close, lbp=14, fillna=False):
-    """Williams %R
+    """
+    Williams %R
     From: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:williams_r
     Developed by Larry Williams, Williams %R is a momentum indicator that is the inverse of the
     Fast Stochastic Oscillator. Also referred to as %R, Williams %R reflects the level of the close
@@ -211,6 +221,7 @@ def wr(high, low, close, lbp=14, fillna=False):
     From: https://www.investopedia.com/terms/w/williamsr.asp
     The Williams %R oscillates from 0 to -100. When the indicator produces readings from 0 to -20, this indicates
     overbought market conditions. When readings are -80 to -100, it indicates oversold market conditions.
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -220,7 +231,6 @@ def wr(high, low, close, lbp=14, fillna=False):
     Returns:
         pandas.Series: New feature generated.
     """
-
     hh = high.rolling(lbp).max() #highest high over lookback period lbp
     ll = low.rolling(lbp).min()  #lowest low over lookback period lbp
 
@@ -228,11 +238,12 @@ def wr(high, low, close, lbp=14, fillna=False):
 
     if fillna:
         wr = wr.replace([np.inf, -np.inf], np.nan).fillna(-50)
+    
     return pd.Series(wr, name='wr')
 
-
 def ao(high, low, s=5, l=34, fillna=False):
-    """Awesome Oscillator
+    """
+    Awesome Oscillator
     From: https://www.tradingview.com/wiki/Awesome_Oscillator_(AO)
     The Awesome Oscillator is an indicator used to measure market momentum. AO calculates the difference of a
     34 Period and 5 Period Simple Moving Averages. The Simple Moving Averages that are used are not calculated
@@ -245,6 +256,7 @@ def ao(high, low, s=5, l=34, fillna=False):
     AO = SMA(MEDIAN PRICE, 5)-SMA(MEDIAN PRICE, 34)
     where
     SMA — Simple Moving Average.
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -254,10 +266,10 @@ def ao(high, low, s=5, l=34, fillna=False):
     Returns:
         pandas.Series: New feature generated.
     """
-
     mp = 0.5 * (high + low)
     ao = mp.rolling(s).mean() - mp.rolling(l).mean()
 
     if fillna:
         ao = ao.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(ao, name='ao')

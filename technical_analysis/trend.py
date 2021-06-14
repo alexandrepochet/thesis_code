@@ -1,19 +1,15 @@
-# -*- coding: utf-8 -*-
-"""
-.. module:: trend
-   :synopsis: Trend Indicators.
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-"""
 import pandas as pd
 import numpy as np
-import technical_analysis.utils
+import utils.utils as utils
 
 
 def macd(close, n_fast=12, n_slow=26, fillna=False):
-    """Moving Average Convergence Divergence (MACD)
+    """
+    Moving Average Convergence Divergence (MACD)
     Is a trend-following momentum indicator that shows the relationship between
     two moving averages of prices.
     https://en.wikipedia.org/wiki/MACD
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n_fast(int): n period short-term.
@@ -27,13 +23,15 @@ def macd(close, n_fast=12, n_slow=26, fillna=False):
     macd = emafast - emaslow
     if fillna:
         macd = macd.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(macd, name='MACD_%d_%d' % (n_fast, n_slow))
 
-
 def macd_signal(close, n_fast=12, n_slow=26, n_sign=9, fillna=False):
-    """Moving Average Convergence Divergence (MACD Signal)
+    """
+    Moving Average Convergence Divergence (MACD Signal)
     Shows EMA of MACD.
     https://en.wikipedia.org/wiki/MACD
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n_fast(int): n period short-term.
@@ -49,13 +47,15 @@ def macd_signal(close, n_fast=12, n_slow=26, n_sign=9, fillna=False):
     macd_signal = utils.ema(macd, n_sign, fillna)
     if fillna:
         macd_signal = macd_signal.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(macd_signal, name='MACD_sign')
 
-
 def macd_diff(close, n_fast=12, n_slow=26, n_sign=9, fillna=False):
-    """Moving Average Convergence Divergence (MACD Diff)
+    """
+    Moving Average Convergence Divergence (MACD Diff)
     Shows the relationship between MACD and MACD Signal.
     https://en.wikipedia.org/wiki/MACD
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n_fast(int): n period short-term.
@@ -72,12 +72,14 @@ def macd_diff(close, n_fast=12, n_slow=26, n_sign=9, fillna=False):
     macd_diff = macd - macdsign
     if fillna:
         macd_diff = macd_diff.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(macd_diff, name='MACD_diff')
 
-
 def ema_indicator(close, n=12, fillna=False):
-    """EMA
+    """
+    EMA
     Exponential Moving Average via Pandas
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n_fast(int): n period short-term.
@@ -86,11 +88,12 @@ def ema_indicator(close, n=12, fillna=False):
         pandas.Series: New feature generated.
     """
     ema_ = utils.ema(close, n, fillna)
+    
     return pd.Series(ema_, name='ema')
 
-
 def adx(high, low, close, n=14, fillna=False):
-    """Average Directional Movement Index (ADX)
+    """
+    Average Directional Movement Index (ADX)
     The Plus Directional Indicator (+DI) and Minus Directional Indicator (-DI)
     are derived from smoothed averages of these differences, and measure trend
     direction over time. These two indicators are often referred to collectively
@@ -101,6 +104,7 @@ def adx(high, low, close, n=14, fillna=False):
     Using these three indicators together, chartists can determine both the
     direction and strength of the trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -168,11 +172,12 @@ def adx(high, low, close, n=14, fillna=False):
 
     if fillna:
         adx = adx.replace([np.inf, -np.inf], np.nan).fillna(20)
+    
     return pd.Series(adx, name='adx')
 
-
 def adx_pos(high, low, close, n=14, fillna=False):
-    """Average Directional Movement Index Positive (ADX)
+    """
+    Average Directional Movement Index Positive (ADX)
     The Plus Directional Indicator (+DI) and Minus Directional Indicator (-DI)
     are derived from smoothed averages of these differences, and measure trend
     direction over time. These two indicators are often referred to collectively
@@ -183,6 +188,7 @@ def adx_pos(high, low, close, n=14, fillna=False):
     Using these three indicators together, chartists can determine both the
     direction and strength of the trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -222,11 +228,12 @@ def adx_pos(high, low, close, n=14, fillna=False):
 
     if fillna:
         dip = dip.replace([np.inf, -np.inf], np.nan).fillna(20)
+    
     return pd.Series(dip, name='adx_pos')
 
-
 def adx_neg(high, low, close, n=14, fillna=False):
-    """Average Directional Movement Index Negative (ADX)
+    """
+    Average Directional Movement Index Negative (ADX)
     The Plus Directional Indicator (+DI) and Minus Directional Indicator (-DI)
     are derived from smoothed averages of these differences, and measure trend
     direction over time. These two indicators are often referred to collectively
@@ -237,6 +244,7 @@ def adx_neg(high, low, close, n=14, fillna=False):
     Using these three indicators together, chartists can determine both the
     direction and strength of the trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -276,15 +284,17 @@ def adx_neg(high, low, close, n=14, fillna=False):
 
     if fillna:
         din = din.replace([np.inf, -np.inf], np.nan).fillna(20)
+    
     return pd.Series(din, name='adx_neg')
 
-
 def vortex_indicator_pos(high, low, close, n=14, fillna=False):
-    """Vortex Indicator (VI)
+    """
+    Vortex Indicator (VI)
     It consists of two oscillators that capture positive and negative trend
     movement. A bullish signal triggers when the positive trend indicator
     crosses above the negative trend indicator or a key level.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vortex_indicator
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -302,15 +312,17 @@ def vortex_indicator_pos(high, low, close, n=14, fillna=False):
     vip = vmp.rolling(n).sum() / trn
     if fillna:
         vip = vip.replace([np.inf, -np.inf], np.nan).fillna(1)
+    
     return pd.Series(vip, name='vip')
 
-
 def vortex_indicator_neg(high, low, close, n=14, fillna=False):
-    """Vortex Indicator (VI)
+    """
+    Vortex Indicator (VI)
     It consists of two oscillators that capture positive and negative trend
     movement. A bearish signal triggers when the negative trend indicator
     crosses above the positive trend indicator or a key level.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vortex_indicator
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -328,14 +340,16 @@ def vortex_indicator_neg(high, low, close, n=14, fillna=False):
     vin = vmm.rolling(n).sum() / trn
     if fillna:
         vin = vin.replace([np.inf, -np.inf], np.nan).fillna(1)
+    
     return pd.Series(vin, name='vin')
 
-
 def trix(close, n=15, fillna=False):
-    """Trix (TRIX)
+    """
+    Trix (TRIX)
     Shows the percent rate of change of a triple exponentially smoothed moving
     average.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:trix
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -350,15 +364,17 @@ def trix(close, n=15, fillna=False):
     trix *= 100
     if fillna:
         trix = trix.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(trix, name='trix_'+str(n))
 
-
 def mass_index(high, low, n=9, n2=25, fillna=False):
-    """Mass Index (MI)
+    """
+    Mass Index (MI)
     It uses the high-low range to identify trend reversals based on range
     expansions. It identifies range bulges that can foreshadow a reversal of the
     current trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:mass_index
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -375,17 +391,19 @@ def mass_index(high, low, n=9, n2=25, fillna=False):
     mass = mass.rolling(n2).sum()
     if fillna:
         mass = mass.replace([np.inf, -np.inf], np.nan).fillna(n2)
+    
     return pd.Series(mass, name='mass_index_'+str(n))
 
-
 def cci(high, low, close, n=20, c=0.015, fillna=False):
-    """Commodity Channel Index (CCI)
+    """
+    Commodity Channel Index (CCI)
     CCI measures the difference between a security's price change and its
     average price change. High positive readings indicate that prices are well
     above their average, which is a show of strength. Low negative readings
     indicate that prices are well below their average, which is a show of
     weakness.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:commodity_channel_index_cci
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -400,14 +418,16 @@ def cci(high, low, close, n=20, c=0.015, fillna=False):
     cci = (pp - pp.rolling(n).mean()) / (c * pp.rolling(n).std())
     if fillna:
         cci = cci.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(cci, name='cci')
 
-
 def dpo(close, n=20, fillna=False):
-    """Detrended Price Oscillator (DPO)
+    """
+    Detrended Price Oscillator (DPO)
     Is an indicator designed to remove trend from price and make it easier to
     identify cycles.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:detrended_price_osci
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -418,16 +438,18 @@ def dpo(close, n=20, fillna=False):
     dpo = close.shift(int((0.5 * n) + 1)) - close.rolling(n).mean()
     if fillna:
         dpo = dpo.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(dpo, name='dpo_'+str(n))
 
-
 def kst(close, r1=10, r2=15, r3=20, r4=30, n1=10, n2=10, n3=10, n4=15, fillna=False):
-    """KST Oscillator (KST)
+    """
+    KST Oscillator (KST)
     It is useful to identify major stock market cycle junctures because its
     formula is weighed to be more greatly influenced by the longer and more
     dominant time spans, in order to better reflect the primary swings of stock
     market cycle.
     https://en.wikipedia.org/wiki/KST_oscillator
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         r1(int): r1 period.
@@ -449,16 +471,18 @@ def kst(close, r1=10, r2=15, r3=20, r4=30, n1=10, n2=10, n3=10, n4=15, fillna=Fa
     kst = 100 * (rocma1 + 2 * rocma2 + 3 * rocma3 + 4 * rocma4)
     if fillna:
         kst = kst.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(kst, name='kst')
 
-
 def kst_sig(close, r1=10, r2=15, r3=20, r4=30, n1=10, n2=10, n3=10, n4=15, nsig=9, fillna=False):
-    """KST Oscillator (KST Signal)
+    """
+    KST Oscillator (KST Signal)
     It is useful to identify major stock market cycle junctures because its
     formula is weighed to be more greatly influenced by the longer and more
     dominant time spans, in order to better reflect the primary swings of stock
     market cycle.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         r1(int): r1 period.
@@ -482,13 +506,15 @@ def kst_sig(close, r1=10, r2=15, r3=20, r4=30, n1=10, n2=10, n3=10, n4=15, nsig=
     kst_sig = kst.rolling(nsig).mean()
     if fillna:
         kst_sig = kst_sig.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(kst_sig, name='kst_sig')
 
-
 def ichimoku_a(high, low, n1=9, n2=26, visual=False, fillna=False):
-    """Ichimoku Kinkō Hyō (Ichimoku)
+    """
+    Ichimoku Kinkō Hyō (Ichimoku)
     It identifies the trend and look for potential signals within that trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ichimoku_cloud
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -511,11 +537,12 @@ def ichimoku_a(high, low, n1=9, n2=26, visual=False, fillna=False):
 
     return pd.Series(spana, name='ichimoku_a_'+str(n2))
 
-
 def ichimoku_b(high, low, n2=26, n3=52, visual=False, fillna=False):
-    """Ichimoku Kinkō Hyō (Ichimoku)
+    """
+    Ichimoku Kinkō Hyō (Ichimoku)
     It identifies the trend and look for potential signals within that trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ichimoku_cloud
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -535,12 +562,13 @@ def ichimoku_b(high, low, n2=26, n3=52, visual=False, fillna=False):
 
     return pd.Series(spanb, name='ichimoku_b_'+str(n2))
 
-
 def aroon_up(close, n=25, fillna=False):
-    """Aroon Indicator (AI)
+    """
+    Aroon Indicator (AI)
     Identify when trends are likely to change direction (uptrend).
     Aroon Up - ((N - Days Since N-day High) / N) x 100
     https://www.investopedia.com/terms/a/aroon.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -551,14 +579,17 @@ def aroon_up(close, n=25, fillna=False):
     aroon_up = close.rolling(n).apply(lambda x: float(np.argmax(x) + 1) / n * 100, raw = True)
     if fillna:
         aroon_up = aroon_up.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(aroon_up, name='aroon_up'+str(n))
 
 
 def aroon_down(close, n=25, fillna=False):
-    """Aroon Indicator (AI)
+    """
+    Aroon Indicator (AI)
     Identify when trends are likely to change direction (downtrend).
     Aroon Down - ((N - Days Since N-day Low) / N) x 100
     https://www.investopedia.com/terms/a/aroon.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -569,4 +600,5 @@ def aroon_down(close, n=25, fillna=False):
     aroon_down = close.rolling(n).apply(lambda x: float(np.argmin(x) + 1) / n * 100, raw = True)
     if fillna:
         aroon_down = aroon_down.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(aroon_down, name='aroon_down'+str(n))

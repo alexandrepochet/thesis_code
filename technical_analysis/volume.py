@@ -1,18 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-.. module:: volume
-   :synopsis: Volume Indicators.
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-"""
-
 import pandas as pd
 import numpy as np
 
 
 def acc_dist_index(high, low, close, volume, fillna=False):
-    """Accumulation/Distribution Index (ADI)
+    """
+    Accumulation/Distribution Index (ADI)
     Acting as leading indicator of price movements.
     https://en.wikipedia.org/wiki/Accumulation/distribution_index
+
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -28,14 +23,16 @@ def acc_dist_index(high, low, close, volume, fillna=False):
     ad = ad + ad.shift(1)
     if fillna:
         ad = ad.replace([np.inf, -np.inf], np.nan).fillna(0)
+
     return pd.Series(ad, name='adi')
 
-
 def on_balance_volume(close, volume, fillna=False):
-    """On-balance volume (OBV)
+    """
+    On-balance volume (OBV)
     It relates price and volume in the stock market. OBV is based on a
     cumulative total volume.
     https://en.wikipedia.org/wiki/On-balance_volume
+
     Args:
         close(pandas.Series): dataset 'Close' column.
         volume(pandas.Series): dataset 'Volume' column.
@@ -56,11 +53,12 @@ def on_balance_volume(close, volume, fillna=False):
         obv = obv.replace([np.inf, -np.inf], np.nan).fillna(0)
     return pd.Series(obv, name='obv')
 
-
 def on_balance_volume_mean(close, volume, n=10, fillna=False):
-    """On-balance volume mean (OBV mean)
+    """
+    On-balance volume mean (OBV mean)
     It's based on a cumulative total volume.
     https://en.wikipedia.org/wiki/On-balance_volume
+
     Args:
         close(pandas.Series): dataset 'Close' column.
         volume(pandas.Series): dataset 'Volume' column.
@@ -80,13 +78,15 @@ def on_balance_volume_mean(close, volume, n=10, fillna=False):
     obv = df['OBV'].rolling(n).mean()
     if fillna:
         obv = obv.replace([np.inf, -np.inf], np.nan).fillna(0)
+
     return pd.Series(obv, name='obv')
 
-
 def chaikin_money_flow(high, low, close, volume, n=20, fillna=False):
-    """Chaikin Money Flow (CMF)
+    """
+    Chaikin Money Flow (CMF)
     It measures the amount of Money Flow Volume over a specific period.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -103,15 +103,17 @@ def chaikin_money_flow(high, low, close, volume, n=20, fillna=False):
     cmf = mfv.rolling(n).sum() / volume.rolling(n).sum()
     if fillna:
         cmf = cmf.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(cmf, name='cmf')
 
-
 def force_index(close, volume, n=2, fillna=False):
-    """Force Index (FI)
+    """
+    Force Index (FI)
     It illustrates how strong the actual buying or selling pressure is. High
     positive values mean there is a strong rising trend, and low values signify
     a strong downward trend.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:force_index
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         volume(pandas.Series): dataset 'Volume' column.
@@ -123,14 +125,16 @@ def force_index(close, volume, n=2, fillna=False):
     fi = close.diff(n) * volume.diff(n)
     if fillna:
         fi = fi.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(fi, name='fi_'+str(n))
 
-
 def ease_of_movement(high, low, close, volume, n=20, fillna=False):
-    """Ease of movement (EoM, EMV)
+    """
+    Ease of movement (EoM, EMV)
     It relate an asset's price change to its volume and is particularly useful
     for assessing the strength of a trend.
     https://en.wikipedia.org/wiki/Ease_of_movement
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -145,15 +149,17 @@ def ease_of_movement(high, low, close, volume, n=20, fillna=False):
     emv = emv.rolling(n).mean()
     if fillna:
         emv = emv.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(emv, name='eom_' + str(n))
 
-
 def volume_price_trend(close, volume, fillna=False):
-    """Volume-price trend (VPT)
+    """
+    Volume-price trend (VPT)
     Is based on a running cumulative volume that adds or substracts a multiple
     of the percentage change in share price trend and current volume, depending
     upon the investment's upward or downward movements.
     https://en.wikipedia.org/wiki/Volume%E2%80%93price_trend
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         volume(pandas.Series): dataset 'Volume' column.
@@ -166,11 +172,12 @@ def volume_price_trend(close, volume, fillna=False):
     vpt = vpt.shift(1) + vpt
     if fillna:
         vpt = vpt.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(vpt, name='vpt')
 
-
 def negative_volume_index(close, volume, fillna=False):
-    """Negative Volume Index (NVI)
+    """
+    Negative Volume Index (NVI)
     From: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde
     The Negative Volume Index (NVI) is a cumulative indicator that uses the change in volume to decide when the
     smart money is active. Paul Dysart first developed this indicator in the 1930s. [...] Dysart's Negative Volume
@@ -187,6 +194,7 @@ def negative_volume_index(close, volume, fillna=False):
     Please note: the "stockcharts.com" example calculation just adds the percentage change of price to previous
     NVI when volumes decline; other sources indicate that the same percentage of the previous NVI value should
     be added, which is what is implemented here.
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         volume(pandas.Series): dataset 'Volume' column.

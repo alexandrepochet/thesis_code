@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-.. module:: others
-   :synopsis: Others Indicators.
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-"""
 import numpy as np
 import pandas as pd
 
 
 def daily_return(close, fillna=False):
-    """Daily Return (DR)
+    """
+    Daily Return (DR)
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         fillna(bool): if True, fill nan values.
@@ -20,12 +16,14 @@ def daily_return(close, fillna=False):
     dr *= 100
     if fillna:
         dr = dr.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(dr, name='d_ret')
 
-
 def daily_log_return(close, fillna=False):
-    """Daily Log Return (DLR)
+    """
+    Daily Log Return (DLR)
     https://stackoverflow.com/questions/31287552/logarithmic-returns-in-pandas-dataframe
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         fillna(bool): if True, fill nan values.
@@ -36,11 +34,13 @@ def daily_log_return(close, fillna=False):
     dr *= 100
     if fillna:
         dr = dr.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(dr, name='d_logret')
 
-
 def cumulative_return(close, fillna=False):
-    """Cumulative Return (CR)
+    """
+    Cumulative Return (CR)
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         fillna(bool): if True, fill nan values.
@@ -51,4 +51,5 @@ def cumulative_return(close, fillna=False):
     cr *= 100
     if fillna:
         cr = cr.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(cr, name='cum_ret')

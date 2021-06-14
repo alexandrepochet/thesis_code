@@ -1,19 +1,15 @@
-# -*- coding: utf-8 -*-
-"""
-.. module:: volatility
-   :synopsis: Volatility Indicators.
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-"""
 import pandas as pd
 import numpy as np
 
 
 def average_true_range(high, low, close, n=14, fillna=False):
-    """Average True Range (ATR)
+    """
+    Average True Range (ATR)
     The indicator provide an indication of the degree of price volatility.
     Strong moves, in either direction, are often accompanied by large ranges,
     or large True Ranges.
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_true_range_atr
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -37,11 +33,12 @@ def average_true_range(high, low, close, n=14, fillna=False):
 
     return pd.Series(atr, name='atr')
 
-
 def bollinger_mavg(close, n=20, fillna=False):
-    """Bollinger Bands (BB)
+    """
+    Bollinger Bands (BB)
     N-period simple moving average (MA).
     https://en.wikipedia.org/wiki/Bollinger_Bands
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -51,14 +48,16 @@ def bollinger_mavg(close, n=20, fillna=False):
     mavg = close.rolling(n).mean()
     if fillna:
         mavg = mavg.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(mavg, name='mavg')
 
-
 def bollinger_hband(close, n=20, ndev=2, fillna=False):
-    """Bollinger Bands (BB)
+    """
+    Bollinger Bands (BB)
     Upper band at K times an N-period standard deviation above the moving
     average (MA + Kdeviation).
     https://en.wikipedia.org/wiki/Bollinger_Bands
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -71,14 +70,16 @@ def bollinger_hband(close, n=20, ndev=2, fillna=False):
     hband = mavg + ndev*mstd
     if fillna:
         hband = hband.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(hband, name='hband')
 
-
 def bollinger_lband(close, n=20, ndev=2, fillna=False):
-    """Bollinger Bands (BB)
+    """
+    Bollinger Bands (BB)
     Lower band at K times an N-period standard deviation below the moving
     average (MA − Kdeviation).
     https://en.wikipedia.org/wiki/Bollinger_Bands
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -91,13 +92,15 @@ def bollinger_lband(close, n=20, ndev=2, fillna=False):
     lband = mavg - ndev * mstd
     if fillna:
         lband = lband.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(lband, name='lband')
 
-
 def bollinger_hband_indicator(close, n=20, ndev=2, fillna=False):
-    """Bollinger High Band Indicator
+    """
+    Bollinger High Band Indicator
     Returns 1, if close is higher than bollinger high band. Else, return 0.
     https://en.wikipedia.org/wiki/Bollinger_Bands
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -114,13 +117,15 @@ def bollinger_hband_indicator(close, n=20, ndev=2, fillna=False):
     hband = df['hband']
     if fillna:
         hband = hband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(hband, name='bbihband')
 
-
 def bollinger_lband_indicator(close, n=20, ndev=2, fillna=False):
-    """Bollinger Low Band Indicator
+    """
+    Bollinger Low Band Indicator
     Returns 1, if close is lower than bollinger low band. Else, return 0.
     https://en.wikipedia.org/wiki/Bollinger_Bands
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -137,13 +142,15 @@ def bollinger_lband_indicator(close, n=20, ndev=2, fillna=False):
     lband = df['lband']
     if fillna:
         lband = lband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(lband, name='bbilband')
 
-
 def keltner_channel_central(high, low, close, n=10, fillna=False):
-    """Keltner channel (KC)
+    """
+    Keltner channel (KC)
     Showing a simple moving average line (central) of typical price.
     https://en.wikipedia.org/wiki/Keltner_channel
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -156,13 +163,15 @@ def keltner_channel_central(high, low, close, n=10, fillna=False):
     tp = tp.rolling(n).mean()
     if fillna:
         tp = tp.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(tp, name='kc_central')
 
-
 def keltner_channel_hband(high, low, close, n=10, fillna=False):
-    """Keltner channel (KC)
+    """
+    Keltner channel (KC)
     Showing a simple moving average line (high) of typical price.
     https://en.wikipedia.org/wiki/Keltner_channel
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -175,13 +184,15 @@ def keltner_channel_hband(high, low, close, n=10, fillna=False):
     tp = tp.rolling(n).mean()
     if fillna:
         tp = tp.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(tp, name='kc_hband')
 
-
 def keltner_channel_lband(high, low, close, n=10, fillna=False):
-    """Keltner channel (KC)
+    """
+    Keltner channel (KC)
     Showing a simple moving average line (low) of typical price.
     https://en.wikipedia.org/wiki/Keltner_channel
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -194,14 +205,16 @@ def keltner_channel_lband(high, low, close, n=10, fillna=False):
     tp = tp.rolling(n).mean()
     if fillna:
         tp = tp.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(tp, name='kc_lband')
 
-
 def keltner_channel_hband_indicator(high, low, close, n=10, fillna=False):
-    """Keltner Channel High Band Indicator (KC)
+    """
+    Keltner Channel High Band Indicator (KC)
     Returns 1, if close is higher than keltner high band channel. Else,
     return 0.
     https://en.wikipedia.org/wiki/Keltner_channel
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -217,13 +230,15 @@ def keltner_channel_hband_indicator(high, low, close, n=10, fillna=False):
     hband = df['hband']
     if fillna:
         hband = hband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(hband, name='kci_hband')
 
-
 def keltner_channel_lband_indicator(high, low, close, n=10, fillna=False):
-    """Keltner Channel Low Band Indicator (KC)
+    """
+    Keltner Channel Low Band Indicator (KC)
     Returns 1, if close is lower than keltner low band channel. Else, return 0.
     https://en.wikipedia.org/wiki/Keltner_channel
+    
     Args:
         high(pandas.Series): dataset 'High' column.
         low(pandas.Series): dataset 'Low' column.
@@ -239,13 +254,15 @@ def keltner_channel_lband_indicator(high, low, close, n=10, fillna=False):
     lband = df['lband']
     if fillna:
         lband = lband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(lband, name='kci_lband')
 
-
 def donchian_channel_hband(close, n=20, fillna=False):
-    """Donchian channel (DC)
+    """
+    Donchian channel (DC)
     The upper band marks the highest price of an issue for n periods.
     https://www.investopedia.com/terms/d/donchianchannels.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -255,13 +272,15 @@ def donchian_channel_hband(close, n=20, fillna=False):
     hband = close.rolling(n).max()
     if fillna:
         hband = hband.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(hband, name='dchband')
 
-
 def donchian_channel_lband(close, n=20, fillna=False):
-    """Donchian channel (DC)
+    """
+    Donchian channel (DC)
     The lower band marks the lowest price for n periods.
     https://www.investopedia.com/terms/d/donchianchannels.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -271,14 +290,16 @@ def donchian_channel_lband(close, n=20, fillna=False):
     lband = close.rolling(n).min()
     if fillna:
         lband = lband.replace([np.inf, -np.inf], np.nan).fillna(method='backfill')
+    
     return pd.Series(lband, name='dclband')
 
-
 def donchian_channel_hband_indicator(close, n=20, fillna=False):
-    """Donchian High Band Indicator
+    """
+    Donchian High Band Indicator
     Returns 1, if close is higher than donchian high band channel. Else,
     return 0.
     https://www.investopedia.com/terms/d/donchianchannels.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -292,13 +313,15 @@ def donchian_channel_hband_indicator(close, n=20, fillna=False):
     hband = df['hband']
     if fillna:
         hband = hband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(hband, name='dcihband')
 
-
 def donchian_channel_lband_indicator(close, n=20, fillna=False):
-    """Donchian Low Band Indicator
+    """
+    Donchian Low Band Indicator
     Returns 1, if close is lower than donchian low band channel. Else, return 0.
     https://www.investopedia.com/terms/d/donchianchannels.asp
+    
     Args:
         close(pandas.Series): dataset 'Close' column.
         n(int): n period.
@@ -312,4 +335,5 @@ def donchian_channel_lband_indicator(close, n=20, fillna=False):
     lband = df['lband']
     if fillna:
         lband = lband.replace([np.inf, -np.inf], np.nan).fillna(0)
+    
     return pd.Series(lband, name='dcilband')

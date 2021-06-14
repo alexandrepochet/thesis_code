@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
-
 import technical_analysis.volume as v
-import technical_analysis.volatility
-import technical_analysis.trend 
-import technical_analysis.momentum
-import technical_analysis.others
+import technical_analysis.volatility as volatility
+import technical_analysis.trend as trend
+import technical_analysis.momentum as momentum
+import technical_analysis.others as others
 
 
 def add_volume_ta(df, high, low, close, volume, fillna=False):
-    """Add volume technical analysis features to dataframe.
+    """
+    Add volume technical analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         high (str): Name of 'high' column.
@@ -31,11 +31,13 @@ def add_volume_ta(df, high, low, close, volume, fillna=False):
                                         df[volume], 14, fillna=fillna)
     df['volume_vpt'] = v.volume_price_trend(df[close], df[volume], fillna=fillna)
     df['volume_nvi'] = v.negative_volume_index(df[close], df[volume], fillna=fillna)
+    
     return df
 
-
 def add_volatility_ta(df, high, low, close, fillna=False):
-    """Add volatility technical analysis features to dataframe.
+    """
+    Add volatility technical analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         high (str): Name of 'high' column.
@@ -73,11 +75,13 @@ def add_volatility_ta(df, high, low, close, fillna=False):
                                                             fillna=fillna)
     df['volatility_dcli'] = volatility.donchian_channel_lband_indicator(df[close], n=20,
                                                             fillna=fillna)
+    
     return df
 
-
 def add_trend_ta(df, high, low, close, fillna=False):
-    """Add trend technical analysis features to dataframe.
+    """
+    Add trend technical analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         high (str): Name of 'high' column.
@@ -119,11 +123,12 @@ def add_trend_ta(df, high, low, close, fillna=False):
     df['trend_aroon_up'] = trend.aroon_up(df[close], n=25, fillna=fillna)
     df['trend_aroon_down'] = trend.aroon_down(df[close], n=25, fillna=fillna)
     df['trend_aroon_ind'] = df['trend_aroon_up'] - df['trend_aroon_down']
-    return df
 
+    return df
 
 def add_momentum_ta(df, high, low, close, volume, fillna=False):
     """Add trend technical analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         high (str): Name of 'high' column.
@@ -144,9 +149,9 @@ def add_momentum_ta(df, high, low, close, volume, fillna=False):
     #df['momentum_ao'] = momentum.ao(df[high], df[low], fillna=fillna)
     return df
 
-
 def add_others_ta(df, close, fillna=False):
     """Add others analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         close (str): Name of 'close' column.
@@ -159,9 +164,9 @@ def add_others_ta(df, close, fillna=False):
     df['others_cr'] = others.cumulative_return(df[close], fillna=fillna)
     return df
 
-
 def add_all_ta_features(df, open, high, low, close, volume, fillna=False):
     """Add all technical analysis features to dataframe.
+
     Args:
         df (pandas.core.frame.DataFrame): Dataframe base.
         open (str): Name of 'open' column.
