@@ -34,11 +34,7 @@ def main(load=1):
     X = data.get_df()
     X = X.drop(['Direction', 'close_bid_ask', 'Return', 'close_bid_ask_previous', 'close'], axis=1)
     print('Keep Bing')
-    X = X.drop(['vader_positive', 'vader_negative', 'vader_objective',
-       'wordnet_positive', 'wordnet_negative', 'wordnet_objective',
-       'poms_positive_OF', 'poms_negative', 'poms_tension', 'poms_anger',
-       'poms_fatigue', 'poms_depression', 'poms_vigour', 'poms_confusion',
-       'poms_positive', 'assoc_fin_pos_positive', 'assoc_fin_pos_negative',
+    X = X.drop(['assoc_fin_pos_positive', 'assoc_fin_pos_negative',
        'assoc_fin_pos_litigious', 'assoc_fin_pos_constraining',
        'assoc_fin_pos_uncertainty', 'assoc_fin_pos_strong_modal',
        'assoc_fin_pos_moderate_modal', 'assoc_fin_pos_weak_modal',
@@ -128,7 +124,7 @@ def main(load=1):
     stats = currency.output_summary_stats()
     print(stats)
 
-    """
+
     ##Hourly data
     #file where all the sentiment time series are stored
     fname = "C:/Users/alexa/OneDrive/Desktop/Thesis/Bitbucket/thesisforex2/preprocessed_data/hourly_sentiment_series.txt"
@@ -224,8 +220,7 @@ def main(load=1):
     currency.plot_return("lstm_sentiments_hourly_cost", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    """
-    pdb.set_trace()
+
     end = time.time()
     print(end - start)
 

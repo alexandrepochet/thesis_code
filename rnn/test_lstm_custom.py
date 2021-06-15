@@ -23,8 +23,7 @@ def main(load=1):
     warnings.filterwarnings("ignore")
     silence_tensorflow()
     start = time.time()
-
-    """         
+       
     ##Daily data
     #file where all the sentiment time series are stored
     fname = "C:/Users/alexa/OneDrive/Desktop/Thesis/Bitbucket/thesisforex2/preprocessed_data/daily_sentiment_series.txt"
@@ -161,8 +160,6 @@ def main(load=1):
     stats = currency.output_summary_stats()
     print(stats)
 
-    """
-
     ##Hourly data
     #file where all the sentiment time series are stored
     fname = "C:/Users/alexa/OneDrive/Desktop/Thesis/Bitbucket/thesisforex2/preprocessed_data/hourly_sentiment_series.txt"
@@ -298,8 +295,7 @@ def main(load=1):
     currency.plot_return("lstm_sentiments_hourly_cost_return", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    
-    pdb.set_trace()
+
     end = time.time()
     print(end - start)
 

@@ -217,7 +217,7 @@ def count_features(x):
 
 def add_features(df, close, high, low, volume, fillna=False):
 
-    n_range = [5]#[5,10,14,20]
+    n_range = [5]
     for n in n_range:
         df['momentum_rsi_' + str(n)] = momentum.rsi(df[close], n=n, fillna=fillna)
         df['momentum_stoch_' + str(n)] = momentum.stoch(df[high], df[low], df[close], n=n, fillna=fillna)
@@ -226,24 +226,24 @@ def add_features(df, close, high, low, volume, fillna=False):
         df['trend_adx_neg_' + str(n)] = trend.adx_neg(df[high], df[low], df[close], n=n, fillna=fillna)
         df['volatility_atr_' + str(n)] = volatility.average_true_range(df[high], df[low], df[close], n=n, fillna=fillna)
 
-    values_range = [(5,35,1),(5,13,1),(12,26,1)]#[(5,35,1),(5,35,5),(5,13,1),(5,13,5),(12,26,1),(12,26,9)]
+    values_range = [(5,35,1),(5,13,1),(12,26,1)]
     for values in values_range:
         df['trend_macd_' + str(values[0]) + '_' + str(values[1])] = trend.macd(df[close], n_fast=values[0], n_slow=values[1], fillna=fillna)
         df['trend_macd_signal_' + str(values[0]) + '_' + str(values[1]) + '_' + str(values[2])] = trend.macd_signal(df[close], n_fast=values[0], n_slow=values[1], n_sign=values[2], fillna=fillna)
         df['trend_macd_diff_' + str(values[0]) + '_' + str(values[1]) + '_' + str(values[2])] = trend.macd_diff(df[close], n_fast=values[0], n_slow=values[1], n_sign=values[2], fillna=fillna)
 
-    n_range = [5]#[5,10,25,40]
+    n_range = [5]
     for n in n_range:
         df['trend_aroon_up_' + str(n)] = trend.aroon_up(df[close], n=n, fillna=fillna)
         df['trend_aroon_down_' + str(n)] = trend.aroon_down(df[close], n=n, fillna=fillna)
         df['trend_aroon_ind_' + str(n)] = df['trend_aroon_up_' + str(n)] - df['trend_aroon_down_' + str(n)]
         df['trend_ema_' + str(n)] = trend.ema_indicator(df[close], n=n, fillna=fillna)
 
-    n_range = [5]#[5,10,15,20]
+    n_range = [5]
     for n in n_range:
         df['volume_obvm_' + str(n)] = v.on_balance_volume_mean(df[close], df[volume], n=n, fillna=fillna)
 
-    n_range = [5]#[5,10,20,30]
+    n_range = [5]
     for n in n_range:
         df['volume_cmf_' + str(n)] = v.chaikin_money_flow(df[high], df[low], df[close], df[volume], n=n, fillna=fillna)
         df['volatility_bbh_' + str(n)] = volatility.bollinger_hband(df[close], n=n, ndev=2, fillna=fillna)

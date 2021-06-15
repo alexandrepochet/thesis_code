@@ -31,17 +31,7 @@ def main():
     disambiguation = d.disambiguation()
     #disambiguation.run("disambiguateWordSenses", nb_processes, data, 'max_similarity', file, type_='disambiguation')
     disambiguation.run("disambiguateWordSenses", nb_processes, data, 'simplified_lesk', file, type_='disambiguation')
-    """
-    #Sentiment_140
-    fname = "C:/Users/alexa/OneDrive/Desktop/Thesis/Bitbucket/thesisforex2/preprocessed_data/sentiment140_pos.txt"
-    freq = 's'
-    file = 'disambiguation_sentiment140'
-    print('preprocessing...\n')
-    data = dat.data_tweets(fname, freq)
-    
-    disambiguation = d.disambiguation()
-    disambiguation.run("disambiguateWordSenses", nb_processes, data, 'simplified_lesk', file, type_='disambiguation')
-    """
+
     end = time.time()
     print(end - start)
 

@@ -97,7 +97,7 @@ def main():
     currency.plot_return("SVC_daily_cost", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    pdb.set_trace()
+   
     # Hourly
     print('------------------------------------------------------------------------')
     print('Hourly data ')
@@ -173,7 +173,7 @@ def main():
     currency.plot_return("SVC_hourly_cost", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    pdb.set_trace()
+
     end = time.time()
     print(end - start)
      

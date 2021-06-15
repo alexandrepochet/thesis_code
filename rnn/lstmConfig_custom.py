@@ -28,9 +28,7 @@ from keras.layers import Dropout, Flatten
 from keras.utils import plot_model
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.models import load_model
-from rnn.KerasBatchGenerator import KerasBatchGenerator
 from keras.layers import BatchNormalization
-from keras_layer_normalization import LayerNormalization
 from matplotlib import pyplot as plt
 from utils.utils import reset_keras
 from utils.algorithm import algorithm
@@ -97,10 +95,8 @@ class lstmConfig():
             opt = SGD  (lr=learning_rate)
         elif self.optimizer=='RMSprop':
             opt = RMSprop(lr=learning_rate, clipnorm=1.0)
-            #opt = RMSprop(lr=learning_rate)
         else:
             opt = Adam(lr=learning_rate)
-        #print(self.model.summary())
         self.model.compile(optimizer=opt, loss=calc_custom_loss, metrics=[custom_accuracy])
 
 
@@ -111,7 +107,6 @@ class lstmConfig():
         else:
             self.model.add(LSTM(units=units, activation=lstm_activation, return_sequences=return_sequences, 
                                 kernel_regularizer=L1L2(l1=kernel_regularizer[0], l2=kernel_regularizer[1]), unroll=True, input_shape=input_shape))
-        #self.model.add(LayerNormalization())
         self.model.add(Dropout(keep_prob))
 
     def _dense_cell(self, units, dense_activation, keep_prob, kernel_regularizer, input_shape=None):
@@ -124,11 +119,9 @@ class lstmConfig():
 
     def fit(self, X_train, Y_train, X_val=None, Y_val=None, X_test=None, Y_test=None, nb_lags=0, batch_size=32, lstm_layers=[64], lstm_activation="relu", dense_layers=None, 
             dense_activation='relu', keep_prob=[0, 0], kernel_regularizer=[0, 0], learning_rate=0.001, epochs=100):
-        #try:
         if dense_layers is None:
             dense_layers = [int(lstm_layers[1]/2)]
         self.init_scale(X_train)
-        #X_train_prime = X_train
         X_train_prime = self.scale(X_train)
         X_train_prime = self.reshape(X_train_prime, nb_lags)
         self._build_network(X_train_prime, lstm_layers, keep_prob, kernel_regularizer, lstm_activation, dense_layers, dense_activation, learning_rate)
@@ -155,8 +148,6 @@ class lstmConfig():
             else:   
                 self.history = self.model.fit(X_train_prime, Y_train, epochs=epochs, batch_size=batch_size, shuffle=False, verbose=0)
         return self.history, None
-        #except: 
-        #    return self.history, "issue"
 
     def predict(self, X_test):
         y_hat = self.model.predict_classes(X_test)
@@ -169,7 +160,7 @@ class lstmConfig():
         else:
             y=Y_test[:,0]
             y=np.array(list(y))
-            score = accuracy_score(y, y_hat)#custom_accuracy(Y_test, y_hat)
+            score = accuracy_score(y, y_hat)
         return score
      
     def init_scale(self, X):

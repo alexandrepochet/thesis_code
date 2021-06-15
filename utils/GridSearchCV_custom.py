@@ -129,9 +129,7 @@ class GridSearchCV_custom():
                 somme_val = np.add(np.add(loss_per_fold[0],loss_per_fold[1]),loss_per_fold[2])/3
                 somme_acc_val = np.add(np.add(acc_per_fold[0],acc_per_fold[1]),acc_per_fold[2])/3
                 somme_acc_training = np.add(np.add(acc_per_fold_training[0],acc_per_fold_training[1]),acc_per_fold_training[2])/3
-                #callback_model = callback()
-                #epoch = callback_model.EarlyStopping(somme_acc_training, somme_acc_val)
-                vec_temp = somme_val#[0:epoch]
+                vec_temp = somme_val
                 index = np.argmax(self.moving_average(vec_temp, window))
                 smoothed_acc_training = self.moving_average(somme_acc_training, window)
                 acc_per_fold_temp = copy.deepcopy(acc_per_fold)
@@ -146,20 +144,13 @@ class GridSearchCV_custom():
                 print(f'> Accuracy: {np.mean(acc_per_fold*100)} (+- {np.std(acc_per_fold*100)})')
                 print('------------------------------------------------------------------------')
             if neural is True:
-                if np.mean(loss_per_fold) < best_loss:# and smoothed_acc_training[index]>0.55:
+                if np.mean(loss_per_fold) < best_loss:
                     smoothed_acc_training_bool = True
                     best_loss = np.mean(loss_per_fold)
                     best_accuracy = np.mean(acc_per_fold)
                     best_params = params_dic
                     if neural is True:
                         best_params["epochs"] = index + 1
-                #else:
-                #    if np.mean(loss_per_fold) < best_loss and smoothed_acc_training_bool is False:
-                #        best_loss = np.mean(loss_per_fold)
-                #        best_accuracy = np.mean(acc_per_fold)
-                #        best_params = params_dic
-                #        if neural is True:
-                #            best_params["epochs"] = index + 1
             else:
                 if np.mean(loss_per_fold) < best_loss:
                     best_loss = np.mean(loss_per_fold)

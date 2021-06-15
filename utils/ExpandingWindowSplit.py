@@ -15,21 +15,6 @@ class ExpandingWindowSplit():
 
     def split(self, X, y=None, groups=None):
         """Generate indices to split data into training and test set.
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            Training data, where n_samples is the number of samples
-            and n_features is the number of features.
-        y : array-like of shape (n_samples,)
-            Always ignored, exists for compatibility.
-        groups : array-like of shape (n_samples,)
-            Always ignored, exists for compatibility.
-        Yields
-        ------
-        train : ndarray
-            The training set indices for that split.
-        test : ndarray
-            The testing set indices for that split.
         """
         X, y, groups = indexable(X, y, groups)
         n_samples = _num_samples(X)

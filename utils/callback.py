@@ -45,9 +45,7 @@ def calc_custom_loss(y_true, y_pred):
     returns = Reshape((1,))(returns)
     tcosts = y_true[:,2]
     tcosts = Reshape((1,))(tcosts)
-    #loss =  K.mean(K.square(returns*((K.sign(y_pred - 0.5) + 1)/2 - y_true[:,0])), axis=-1)
     loss =  -K.mean(returns*K.tanh(10*(y_pred - 0.5)) - tcosts*K.abs(K.tanh(10*(tf_diff_axis_0(y_pred)))), axis=-1)
-    #loss =  -K.mean(returns*((y_pred - 0.5)/K.sqrt(K.square(y_pred - 0.5) + 0.00001)) - tcosts*K.abs(K.tanh(10*(tf_diff_axis_0(y_pred)))), axis=-1)
     return loss
 
 def tf_diff_axis_0(a):
@@ -56,8 +54,6 @@ def tf_diff_axis_0(a):
 
 def custom_accuracy(y_true, y_pred):
     y = y_true[:,0]  
-    #y = np.array(list(y), dtype=np.int)
     y = Reshape((1,))(y)
-    #accuracy = K.mean(K.all(K.equal(K.max(y, axis=-1),K.cast(K.argmax(y_pred, axis=-1), K.floatx())),axis=1))
     accuracy = K.mean(K.equal(y, K.round(y_pred)))#
     return accuracy

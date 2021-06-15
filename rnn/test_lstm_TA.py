@@ -137,8 +137,7 @@ def main(load=1):
     currency.plot_return("lstm_sentiments_daily_TA_cost3", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    pdb.set_trace()
-    """
+
     # Hourly
     print('------------------------------------------------------------------------')
     print('Hourly data ')
@@ -233,7 +232,7 @@ def main(load=1):
     currency.plot_return("lstm_sentiments_hourly_TA_cost", dash=True)
     stats = currency.output_summary_stats()
     print(stats)
-    """
+
     end = time.time()
     print(end - start)
 

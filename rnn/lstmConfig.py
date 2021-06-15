@@ -28,9 +28,7 @@ from keras.layers import Dropout, Flatten
 from keras.utils import plot_model
 from keras.optimizers import SGD, RMSprop, Adam
 from keras.models import load_model
-from rnn.KerasBatchGenerator import KerasBatchGenerator
 from keras.layers import BatchNormalization
-from keras_layer_normalization import LayerNormalization
 from matplotlib import pyplot as plt
 from utils.utils import reset_keras
 from utils.algorithm import algorithm
@@ -83,7 +81,7 @@ class lstmConfig():
         for i in range(0, length_dense):
             if i==0 and length_lstm==0:
                 self.model.add(Flatten(input_shape=(X_train.shape[1], X_train.shape[2]))) 
-                self._dense_cell(dense_layers[i], dense_activation, keep_prob[length_lstm+i], kernel_regularizer)#, input_shape=(X_train.shape[1], X_train.shape[2]))
+                self._dense_cell(dense_layers[i], dense_activation, keep_prob[length_lstm+i], kernel_regularizer)
             else:
                 self._dense_cell(dense_layers[i], dense_activation, keep_prob[length_lstm+i], kernel_regularizer)
         # Adding the output layer    
@@ -98,9 +96,6 @@ class lstmConfig():
             opt = RMSprop(lr=learning_rate, clipnorm=1.0)
         else:
             opt = Adam(lr=learning_rate)
-        #print(self.model.summary())
-        #self.model.compile(optimizer=opt, loss=calc_custom_loss2, metrics=[custom_accuracy])
-        #self.model.compile(optimizer=opt, loss=binary_crossentropy, metrics=['accuracy'])
         self.model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
 
     def _lstm_cell(self, units, lstm_activation, keep_prob, kernel_regularizer, return_sequences=True, input_shape=None):
@@ -110,7 +105,6 @@ class lstmConfig():
         else:
             self.model.add(LSTM(units=units, activation=lstm_activation, return_sequences=return_sequences, 
                                 kernel_regularizer=L1L2(l1=kernel_regularizer[0], l2=kernel_regularizer[1]), unroll=True, input_shape=input_shape))
-        #self.model.add(LayerNormalization())
         self.model.add(Dropout(keep_prob))
 
     def _dense_cell(self, units, dense_activation, keep_prob, kernel_regularizer, input_shape=None):
@@ -127,7 +121,6 @@ class lstmConfig():
             if dense_layers is None:
                 dense_layers = [int(lstm_layers[1]/2)]
             self.init_scale(X_train)
-            #X_train_prime = X_train
             X_train_prime = self.scale(X_train)
             X_train_prime = self.reshape(X_train_prime, nb_lags)
             self._build_network(X_train_prime, lstm_layers, keep_prob, kernel_regularizer, lstm_activation, dense_layers, dense_activation, learning_rate)
